@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Mozilla+Headline:wght@200..700&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+--font-display:"Mozilla Headline",sans-serif;
+--breakpoint-3xl: 1920px;
+--color-primary: #875cf5;
+}
+
+@layer base{
+    html{
+        font-family: var(--font-display);  
+    }
+
+    body{
+        background-color: antiquewhite;
+        overflow-x: hidden;
+        color:black;
+    }
+}
+
+.input-box{
+    @apply w-full flex justify-between gap-3 text-sm text-black bg-slate-100 rounded px-4 py-3 mb-4 mt-3 border border-slate-200 outline-none;
+}
+.btn-primary{
+    @apply relative px-6 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-indigo-500 
+             text-white font-semibold shadow-md hover:shadow-lg transition-all duration-300
+             hover:scale-105 active:scale-95 after:content-[''] after:absolute after:inset-0 
+             after:rounded-lg after:border after:border-white/30 after:pointer-events-none
+}
