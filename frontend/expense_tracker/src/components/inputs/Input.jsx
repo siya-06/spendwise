@@ -31,7 +31,7 @@ const toggleShowPassword = () =>{
               ) : (
                 <FaRegEyeSlash
                 size={22}
-                className='="text-slate-400 cursor-pointer'
+                className='text-slate-400 cursor-pointer'
                 onClick={() => toggleShowPassword()}
                 />
               )}

@@ -1,15 +1,20 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import AuthLayout from '../../components/layouts/authLayout'
 import Input from '../../components/inputs/input'
 import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { validateEmail } from '../../utils/helper'
+import axiosInstance from '../../utils/axiosInstance'
+import { API_PATHS } from '../../utils/apiPaths'
+import { UserContext } from '../../context/userContext'
 
 
 const Login = () => {
   const [email,setEmail]=useState("")
   const [password,setPassword]=useState("")
   const [error,setError]= useState(null)
+
+  const {updateUser} = useContext(UserContext)
 
 
   const navigate = useNavigate()
@@ -29,6 +34,24 @@ const Login = () => {
     setError("")
 
     //login api call
+    try{
+      const response=await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
+        email,
+        password,
+      })
+      const {token,user} =response.data
+      if(token){
+        localStorage.setItem("token",token)
+        updateUser(user)
+        navigate("/dashboard")
+      }
+    }catch(error){
+      if(error.response && error.response.data.message){
+        setError(error.response.data.message)
+      }else{
+        setError("something went wrong,please try again")
+      }
+    }
 
   }
 
@@ -63,7 +86,7 @@ const Login = () => {
         </button>
         <p className='text-[13px] text-slate-800 mt-3'>
           don't have an account? {" "}
-          <Link className="font-medium text-primary underline" to ="/SignUp">
+          <Link className="font-medium text-primary underline" to ="/signUp">
           SignUp
           </Link>
         </p>

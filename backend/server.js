@@ -1,36 +1,41 @@
-require("dotenv").config()
-const express = require("express")
-const cors = require("cors")
-const path= require("path")
-const connectDB=require("./config/db")
-const authRoutes= require("./routes/authRoutes")
-const incomeRoutes= require("./routes/incomeRoutes")
-const expenseRoutes= require("./routes/expenseRoutes")
-const dashboardRoutes=require("./routes/dashboardRoutes")
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const path = require("path");
+const connectDB = require("./config/db");
+const authRoutes = require("./routes/authRoutes");
+const incomeRoutes = require("./routes/incomeRoutes");
+const expenseRoutes = require("./routes/expenseRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
 
-const app=express()
+const app = express();
 
-//middleware to handle CORS
+// middleware to handle CORS
 app.use(
-    cors({
-        origin: process.env.CLIENT_url || "*",
-        methods: ["GET","POST","PUT","DELETE"],
-        allowedHeaders:["Content-Type","Authorization"],
-    })
-)
+  cors({
+    origin: process.env.CLIENT_URL || "http://localhost:5173", // frontend URL
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
-app.use(express.json())
+app.use(express.json());
 
-connectDB()
+// connect to MongoDB
+connectDB();
 
-app.use("/api/v1/auth", authRoutes)
-app.use("/api/v1/income",incomeRoutes)
-app.use("/api/v1/expense",expenseRoutes)
-app.use("/api/v1/dashboard",dashboardRoutes)
+// routes
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/income", incomeRoutes);
+app.use("/api/v1/expense", expenseRoutes);
+app.use("/api/v1/dashboard", dashboardRoutes);
 
+// serve uploads folder
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-//serve uploads folder
-app.use("/uploads",express.static(path.join(__dirname,"uploads")))
+const PORT = process.env.PORT || 8000;
 
-const PORT=process.env.PORT || 5000
-app.listen(PORT, () => console.log(`Server running on ${PORT}`))
+// IMPORTANT FIX: explicitly bind to 127.0.0.1
+app.listen(PORT, "127.0.0.1", () => {
+  console.log(`✅ Server running at http://127.0.0.1:${PORT}`);
+});

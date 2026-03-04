@@ -6,13 +6,17 @@ import{
   Route,
   Navigate,
 } from "react-router-dom";
-import Login from './pages/auth/login';
+import Login from './pages/Auth/Login';
 import Signup from './pages/Auth/Signup';
-import Home from './pages/dashboard/home'; 
-import Income from './pages/dashboard/income';
-import Expense from './pages/dashboard/expense';
+import Home from './pages/Dashboard/Home'; 
+import Income from './pages/Dashboard/Income';
+import Expense from './pages/Dashboard/Expense';
+import UserProvider from './context/userContext';
+
+
 const App = () => {
   return (
+  <UserProvider>
    <div>
     <Router>
       <Routes>
@@ -26,6 +30,7 @@ const App = () => {
     </Router>
 
    </div>
+  </UserProvider>
   )
 }
 
